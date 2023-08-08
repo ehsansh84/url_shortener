@@ -8,7 +8,7 @@ class Base(BaseModel):
     f"""
     Base model for {module_name}
     """
-    original_url: str = Field(description="url", example="http://www.google.com?id=1")
+    url: str = Field(description="url", example="http://www.google.com?id=1")
 
 
 class Write(Base):
@@ -25,7 +25,6 @@ class Read(Base):
     Use this model to read a {module_name}
     """
     id: str = Field(description="user_id of owner", example="62d7a781d8f8d7627ce212d5")
-    url: str = Field(description="url", example="http://shrt.ir/1")
     order: int = Field(description="Ordinal number", example="1")
     created_at: str = Field(readOnly=True)
     updated_at: str = Field(readOnly=True)
