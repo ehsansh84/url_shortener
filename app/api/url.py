@@ -19,7 +19,7 @@ router = APIRouter(
 async def create(item: Write):
         obj = DataModel()
         obj.set_payload(jsonable_encoder(item))
-        if obj.exists('original_url', obj.original_url):
+        if obj.exists('url', obj.url):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail=f'{obj.url} already exists!',
