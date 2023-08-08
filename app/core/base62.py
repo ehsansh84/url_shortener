@@ -17,7 +17,8 @@ class Base62:
         return base62_result[::-1]
 
     @staticmethod
-    def decode_base_62(number) -> int:
-        for i in number:
+    def decode_base_62(code) -> int:
+        number = 0
+        for i in code:
             number = number * Consts.BASE + Consts.DIGITS.index(i)
         return number
