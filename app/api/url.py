@@ -17,21 +17,13 @@ router = APIRouter(
 # @router.post("/", response_description=f"Create a {module_text}", status_code=status.HTTP_201_CREATED, response_model=OutputCreate)
 @router.post("/", response_description=f"Create a {module_text}", status_code=status.HTTP_201_CREATED)
 async def create(item: Write):
-    try:
-        # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
         obj = DataModel()
         obj.set_payload(jsonable_encoder(item))
-        print(obj.exists('original_url', obj.original_url))
-        print(obj.original_url)
         if obj.exists('original_url', obj.original_url):
-            print('FUCK?')
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-            # raise HTTPException(
-            #     status_code=status.HTTP_409_CONFLICT,
-            #     detail=f'{item.username} already exists!',
-            # )
-        print('ESI?')
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f'{obj.url} already exists!',
+            )
         _id = obj.insert()
         return {
             'detail': f'{module_text} created.',
@@ -39,11 +31,6 @@ async def create(item: Write):
                 'id': str(_id),
             }
         }
-    except Exception as e:
-        print('HOW?')
-        logger.info(str(e))
-        logger.info(e)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 
 @router.put("/{_id}", response_description=f"Update a {module_text}", status_code=status.HTTP_200_OK, response_model=OutputOnlyNote)
