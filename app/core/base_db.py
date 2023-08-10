@@ -122,7 +122,6 @@ class DB:
         if '_id' in doc:
             del doc['_id']
         return self.col.find_one_and_update(conditions, {'$set': doc}, return_document=ReturnDocument.AFTER)
-        # return self.col.update_one(conditions, {'$set': doc}, return_document=ReturnDocument.AFTER)
 
     def delete(self):
         if self.check_id_supplied():
