@@ -26,6 +26,7 @@ class Read(Base):
     """
     id: str = Field(description="user_id of owner", example="62d7a781d8f8d7627ce212d5")
     order: int = Field(description="Ordinal number", example="1")
+    visits: int = Field(description="Visits count", example="1")
     created_at: str = Field(readOnly=True)
     updated_at: str = Field(readOnly=True)
 
