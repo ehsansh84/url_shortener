@@ -4,6 +4,7 @@ root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(root_dir)
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, status, HTTPException
 import uvicorn
 from app.api.url import router as url_router
 from app.db_models.url import Url
@@ -18,10 +19,17 @@ async def get_one(_id, request: Request):
         order = Base62.decode_base_62(_id)
         obj = Url()
         result = obj.list({'order': order})
-        original_url = result[0].url
-        params = request.scope.get("query_string", b"").decode("utf-8")
-        final_url = f'{original_url}&{params}'
-        return RedirectResponse(url=final_url)
+        if len(result) > 0:
+            original_url = result[0].url
+            params = request.scope.get("query_string", b"").decode("utf-8")
+            final_url = f'{original_url}&{params}'
+            result[0].visit()
+            return RedirectResponse(url=final_url)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_CONFLICT,
+                detail=f'{_id} is not correct',
+            )
 
 
 if __name__ == "__main__":
